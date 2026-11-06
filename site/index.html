@@ -215,7 +215,7 @@ dialog::backdrop { background: rgba(10,14,20,.45); }
     </div>
     <div class="dlg-foot">
       <div class="group" id="r-status"></div>
-      <a class="btn ghost" id="r-edit" target="_blank" rel="noopener">Edytuj na GitHubie ↗</a>
+      <a class="btn ghost" id="r-edit" target="_blank" rel="noopener">Edytuj w Claude ↗</a>
     </div>
   </div>
 </dialog>
@@ -224,13 +224,15 @@ dialog::backdrop { background: rgba(10,14,20,.45); }
   <div class="dlg">
     <div class="dlg-head"><h2 id="h-title">Jak dodać materiał</h2><button class="btn ghost" type="button" data-close aria-label="Zamknij">✕</button></div>
     <div class="dlg-body how">
+      <p>Wpisy dodajesz i edytujesz w <a href="https://claude.ai/artifact/EtkjZspqEfrthsttidJ3WU" target="_blank" rel="noopener">aplikacji Baza Wiedzy AI w Claude</a>. Ta strona jest jej kopią.</p>
       <ol>
-        <li>Otwórz <a href="https://claude.ai/code" target="_blank" rel="noopener">Claude Code</a> i wybierz repozytorium <strong>baza-wiedzy-ai</strong>.</li>
-        <li>Wklej materiał (link, prompt, notatkę) i napisz na przykład:
-          <pre>Dodaj do bazy: [wklej tutaj]</pre></li>
-        <li>Claude dobierze kategorię, napisze streszczenie i tagi, a potem wyśle zmianę. Po około minucie wpis pojawi się tutaj z oznaczeniem „nowe”.</li>
+        <li><strong>Sam:</strong> w aplikacji kliknij „+ Dodaj wpis”.</li>
+        <li><strong>Z pomocą Claude:</strong> w rozmowie wklej materiał i napisz na przykład:
+          <pre>Dodaj do bazy: [wklej tutaj]</pre>
+          Claude dobierze kategorię, streszczenie i tagi.</li>
+        <li>Zmiany trafiają tutaj automatycznie około 8:45, 13:45, 19:45 i 22:45. Od razu: przycisk „Wyślij na GitHub” w aplikacji. Nowe wpisy mają oznaczenie „nowe”.</li>
       </ol>
-      <p style="color:var(--muted);font-size:13.5px">Wpisy to zwykłe pliki w folderze <code>wpisy/</code>. Możesz też poprawić je sam przyciskiem „Edytuj na GitHubie” albo otworzyć cały folder w Obsidianie.</p>
+      <p style="color:var(--muted);font-size:13.5px">Nie edytuj plików bezpośrednio na GitHubie: następna synchronizacja nadpisze je wersją z aplikacji.</p>
     </div>
   </div>
 </dialog>
@@ -239,7 +241,7 @@ dialog::backdrop { background: rgba(10,14,20,.45); }
 
 <script>
 (() => {
-  const REPO = "fotonacjanet/baza-wiedzy-ai";
+  const APP_URL = "https://claude.ai/artifact/EtkjZspqEfrthsttidJ3WU";
   const KINDS = { notatka: "Notatka", kurs: "Kurs", zasob: "Zasób", prompt: "Prompt", skill: "Skill", narzedzie: "Narzędzie" };
   const STATUSES = { nowe: "Do nauki", trakcie: "W trakcie", opanowane: "Opanowane" };
   const ORDER = ["nowe", "trakcie", "opanowane"];
@@ -427,7 +429,7 @@ dialog::backdrop { background: rgba(10,14,20,.45); }
     $("#r-body").replaceChildren(renderMd(e.body, e.kind === "prompt"));
     const st = $("#r-status"); st.replaceChildren();
     for (const s of ORDER) st.append(el("button", { class: "status", type: "button", "data-s": s, text: STATUSES[s], style: statusOf(e.id) === s ? "outline:2px solid currentColor;outline-offset:1px" : "opacity:.6", onclick: () => setStatus(e.id, s) }));
-    $("#r-edit").href = `https://github.com/${REPO}/edit/main/wpisy/${e.category}/${e.id}.md`;
+    $("#r-edit").href = APP_URL + "#k-" + e.category;
   }
   $("#dlg-read").addEventListener("close", () => { state.openId = null; });
 

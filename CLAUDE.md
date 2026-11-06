@@ -1,37 +1,29 @@
 # Baza Wiedzy AI — instrukcja dla Claude
 
-To repozytorium to osobista baza wiedzy o AI użytkownika. Strona (GitHub Pages) buduje się sama z plików
-w `wpisy/` po każdym pushu na `main`. Rozmawiaj z użytkownikiem po polsku.
+Osobista baza wiedzy o AI użytkownika. Rozmawiaj po polsku.
+
+## Jak to działa
+
+- **Źródło prawdy:** baza aplikacji w Claude, https://claude.ai/artifact/EtkjZspqEfrthsttidJ3WU
+  (kolekcje `categories` i `entries`, zapis narzędziem ArtifactData).
+- **To repozytorium to kopia.** Routine „Baza Wiedzy AI: synchronizacja z GitHubem”
+  (trig_0191FFfLTQ1sJbzdpSLTQZTL) kilka razy dziennie eksportuje bazę, uruchamia
+  `node narzedzia/sync-z-claude.mjs <eksport>` i `node build.mjs`, a potem robi push. GitHub Pages publikuje `dist/`.
+- **Nie edytuj ręcznie** plików w `wpisy/` ani `kategorie.json`: następna synchronizacja je nadpisze.
+  Zmiany wyglądu strony robisz w `site/`, a reguły budowania w `build.mjs`.
 
 ## Gdy użytkownik wkleja materiał („dodaj do bazy…”)
 
-1. **Dobierz kategorię** z `kategorie.json` (pole `id` = nazwa folderu w `wpisy/`). Jeśli żadna nie pasuje,
-   zaproponuj nową kategorię i dodaj ją do `kategorie.json` (pola: `id`, `name`, `opis`, `kolor` = odcień 0–359,
-   inny niż istniejące) oraz utwórz folder.
-2. **Dobierz rodzaj**: `notatka`, `kurs`, `zasob` (artykuł, repozytorium, strona), `prompt`, `skill`, `narzedzie`.
-3. **Utwórz plik** `wpisy/<kategoria>/<krotka-nazwa>.md` (małe litery, myślniki, bez polskich znaków;
-   nazwa pliku musi być unikalna w całej bazie) w formacie:
-
-   ```markdown
-   ---
-   tytul: "Tytuł wpisu"
-   rodzaj: prompt
-   streszczenie: "1–2 zdania: o czym to jest i po co."
-   link: "https://… albo pusty"
-   tagi: ["tag1","tag2"]
-   dodano: RRRR-MM-DD
-   ---
-   Treść w Markdown: ## nagłówki, - listy, **pogrubienie**.
-   Prompty i kod zawsze w bloku ``` … ``` (strona dodaje przycisk Kopiuj).
-   ```
-
-   Wartości tekstowe w nagłówku zapisuj jako napisy JSON (w cudzysłowach, `\"` w środku).
-4. **Prompty wklejaj dosłownie**, bez poprawiania. Nad blokiem możesz dodać krótką sekcję „Budowa promptu”,
-   która pomaga się z niego uczyć.
-5. **Nie zmyślaj** treści, których użytkownik nie podał. Brakujące elementy oznacz jako „do uzupełnienia”.
+1. Odczytaj kategorie (`ArtifactData list categories`). Dobierz pasującą. Jeśli żadna nie pasuje, zaproponuj
+   nową: dokument w `categories` z polami `name`, `desc`, `hue` (0–359, inny niż istniejące), `order`.
+2. Dobierz rodzaj (`kind`): `notatka`, `kurs`, `zasob` (artykuł, repozytorium, strona), `prompt`, `skill`, `narzedzie`.
+3. Zapisz dokument w `entries` (doc_id: krótka nazwa, małe litery i myślniki, bez polskich znaków, unikalna):
+   `title`, `category` (id kategorii), `kind`, `summary` (1–2 zdania), `body` (Markdown), `url` (lub ""),
+   `tags` (tablica), `createdAt` i `updatedAt` (ms od epoki).
+   W `body` prompty i kod zawsze w bloku ``` … ``` (strona dodaje przycisk Kopiuj).
+4. Prompty wklejaj dosłownie. Nad blokiem możesz dodać krótką sekcję „Budowa promptu”, która pomaga się uczyć.
+5. Nie zmyślaj treści, których użytkownik nie podał. Brakujące elementy oznacz jako „do uzupełnienia”.
    Jeśli dodajesz coś od siebie, dodaj tag `od Claude`.
-6. Uruchom `node build.mjs`. Musi wypisać `OK`. Jeśli wypisze błędy, popraw je.
-7. Zrób commit (`Dodaj: <tytuł>`) i push na `main`. Strona zaktualizuje się po około minucie.
-8. Odpowiedz krótko: jaki wpis, w której kategorii, i link do strony.
-
-Przy kilku materiałach naraz utwórz kilka plików i zrób jeden commit.
+6. Przy edycji istniejącego wpisu podawaj `if_version` z ostatniego odczytu.
+7. Jeśli użytkownik chce mieć zmianę od razu na GitHubie, uruchom routine (`fire_trigger`) albo wykonaj kroki synchronizacji sam.
+8. Odpowiedz krótko: jaki wpis, w której kategorii.
