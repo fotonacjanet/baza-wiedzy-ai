@@ -1,0 +1,38 @@
+[
+  {
+    "id": "fundamenty",
+    "name": "Fundamenty i planowanie",
+    "opis": "Jak działa AI, plan nauki i sprawdzone darmowe kursy.",
+    "kolor": 215
+  },
+  {
+    "id": "finanse",
+    "name": "Finanse, trading i automatyzacja",
+    "opis": "Strategie systematyczne, analizy i materiały do pracy z modelem.",
+    "kolor": 150
+  },
+  {
+    "id": "automatyzacja",
+    "name": "Automatyzacja i no-code",
+    "opis": "Narzędzia deweloperskie, no-code, skrypty i wdrożenia.",
+    "kolor": 30
+  },
+  {
+    "id": "prompty",
+    "name": "Prompt engineering",
+    "opis": "Zasady pisania promptów, szablony i praktyczne triki.",
+    "kolor": 265
+  },
+  {
+    "id": "skille",
+    "name": "Skille i agenci",
+    "opis": "Budowanie skilli, instrukcji projektów i agentów, które powtarzają Twoją pracę.",
+    "kolor": 190
+  },
+  {
+    "id": "media",
+    "name": "Generative media i galeria promptów",
+    "opis": "Wideo, obraz i dźwięk: gotowe prompty i ich warianty.",
+    "kolor": 330
+  }
+]
